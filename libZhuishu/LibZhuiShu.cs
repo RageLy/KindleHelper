@@ -65,7 +65,9 @@ namespace libZhuishu
             List<TocSummmaryInfo> infoList = new List<TocSummmaryInfo>();
             foreach (var summray in ret) {
                 TocSummmaryInfo info = summray.ToObject<TocSummmaryInfo>();
-                infoList.Add(info);
+                if (info.name != "优质书源") {
+                    infoList.Add(info);
+                }       
             }
             return infoList.ToArray();
         }
@@ -90,6 +92,7 @@ namespace libZhuishu
         public static ChapterInfo getChapter(string chaperLink)
         {
             int timestamp = ConvertDateTimeInt(DateTime.Now);
+            chaperLink = System.Web.HttpUtility.UrlEncode(chaperLink, Encoding.UTF8);
             string host = string.Format("http://chapter2.zhuishushenqi.com/chapter/{0}?k=2124b73d7e2e1945&t={1}", chaperLink,timestamp);
             var ret = HttpHelper.GET_JsonObject(host);
             var ok = ret["ok"].ToObject<bool>();
